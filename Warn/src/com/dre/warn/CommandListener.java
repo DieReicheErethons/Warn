@@ -16,6 +16,7 @@ import org.bukkit.util.ChatPaginator.ChatPage;
 public class CommandListener implements CommandExecutor {
 	
 	
+	
 	WPlayer PLAYER;
 	String Grund;
 	String[] GruList;
