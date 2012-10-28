@@ -10,12 +10,23 @@ public class WPlayer {
 	
 	String Grundliste;
 	
+	public int reasonzahl;
+	public String[] reason;
+	public String[] von; 
+	public String[] datum;
+	public String[] position;
+	
+	
 	public static Set<WPlayer> WPlayers=new HashSet<WPlayer>();
 	
 	public WPlayer(){
 		WPlayers.add(this);
 		this.addPunkt();
 		this.Grundliste="";
+		this.reason = new String[30];
+		this.von = new String[30];
+		this.datum = new String[30];
+		this.position = new String[30];
 	}
 	
 	

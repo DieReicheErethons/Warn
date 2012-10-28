@@ -43,6 +43,7 @@ public class warn extends JavaPlugin{
 		
 		this.load();
 		this.loadconfig();
+		warn.save();
 		
 		w.getServer().getLogger().log(Level.INFO,"[WarnDRE]Plugin Geladen");
 		
@@ -82,9 +83,16 @@ public class warn extends JavaPlugin{
 		
 		
 		for(WPlayer wplayer:WPlayer.WPlayers){
-			configFile.set(wplayer.player+".warnings",wplayer.getVerwarnPunkte());
-			configFile.set(wplayer.player+".time",wplayer.ResTime);
-			configFile.set(wplayer.player+".resonList", wplayer.Grundliste);
+				configFile.set(wplayer.player+".warnings",wplayer.getVerwarnPunkte());
+				configFile.set(wplayer.player+".time",wplayer.ResTime);
+				//configFile.set(wplayer.player+".resonList", wplayer.Grundliste);
+				configFile.set(wplayer.player+".reasonzahl", wplayer.reasonzahl);
+				for(int i=0;i<wplayer.reasonzahl;i++){
+					configFile.set(wplayer.player+".resonList."+i+".reason", wplayer.reason[i]);
+					configFile.set(wplayer.player+".resonList."+i+".von", wplayer.von[i]);
+					configFile.set(wplayer.player+".resonList."+i+".datum", wplayer.datum[i]);
+					configFile.set(wplayer.player+".resonList."+i+".position", wplayer.position[i]);
+				}
 		}
 		
 		try {
@@ -267,14 +275,274 @@ public class warn extends JavaPlugin{
 		
 		File file = new File(this.getDataFolder(),"saves.yml");
 		FileConfiguration configFile = YamlConfiguration.loadConfiguration(file);
+		//String arrr[];
+		//int zahl;
+		for(String player:configFile.getKeys(false)){
+				WPlayer wplayer= new WPlayer();
+				wplayer.setName(player);
+				wplayer.setVerwarnpunkt(configFile.getInt(player+".warnings"));
+				wplayer.ResTime=configFile.getLong(player+".time");
+				//wplayer.Grundliste=configFile.getString(player+".resonList");
+				
+				
+				
+				wplayer.reasonzahl=configFile.getInt(player+".reasonzahl");
+				
+				
+				for(int i=0;i<wplayer.reasonzahl;i++){
+					
+					if(i > wplayer.reason.length){
+						wplayer.reason= this.increaseArray(wplayer.reason, 10);
+					}
+					if(i > wplayer.von.length){
+						wplayer.von= this.increaseArray(wplayer.von, 10);
+					}
+					if(i > wplayer.datum.length){
+						wplayer.datum= this.increaseArray(wplayer.datum, 10);
+					}
+					if(i > wplayer.position.length){
+						wplayer.position= this.increaseArray(wplayer.position, 10);
+					}
+					
+					
+					
+					//configFile.set(wplayer.player+".resonList."+i+".reason", wplayer.reason[i]);
+					//configFile.set(wplayer.player+".resonList."+i+".von", wplayer.von[i]);
+					//configFile.set(wplayer.player+".resonList."+i+".datum", wplayer.datum[i]);
+					//configFile.set(wplayer.player+".resonList."+i+".position", wplayer.position[i]);
+					
+					wplayer.reason[i]=configFile.getString(player+".resonList."+i+".reason");
+					wplayer.von[i]=configFile.getString(player+".resonList."+i+".von");
+					wplayer.datum[i]=configFile.getString(player+".resonList."+i+".datum");
+					wplayer.position[i]=configFile.getString(player+".resonList."+i+".position");
+					
+				}
+				/*
+				
+				
+				//System.out.println(player);
+				
+				
+				for(String num:configFile.getKeys(true)){
+					
+					if(num.contains(".resonList.")){
+						
+						if(num.contains(".reason") || num.contains(".von") || num.contains(".position") || num.contains(".datum")){
+							
+							arrr=num.split("[.]");
+							if(player.equalsIgnoreCase(arrr[0])){
+								//if(num.contains("HedLink")){
+									
+								//	System.out.println(num);
+								//}
+								zahl=Integer.parseInt(arrr[2]);
+								//zahl=zahl+1;
+								if(zahl > wplayer.reason.length){
+									wplayer.reason= this.increaseArray(wplayer.reason, 10);
+								}
+								if(zahl > wplayer.von.length){
+									wplayer.von= this.increaseArray(wplayer.von, 10);
+								}
+								if(zahl > wplayer.datum.length){
+									wplayer.datum= this.increaseArray(wplayer.datum, 10);
+								}
+								if(zahl > wplayer.position.length){
+									wplayer.position= this.increaseArray(wplayer.position, 10);
+								}
+								//if(num.contains("HedLink")){
+									
+									//System.out.println(wplayer.player);
+								//}
+								
+								
+								
+								if(num.contains(".reason")){
+									//System.out.println(Integer.parseInt(arrr[2]));
+									wplayer.reason[zahl]=configFile.getString(num);
+									//System.out.println(wplayer.player+":   "+zahl+"   "+wplayer.reason[zahl]);
+								}
+								if(num.contains(".von")){
+									wplayer.von[zahl]=configFile.getString(num);
+								}
+								if(num.contains(".datum")){
+									wplayer.datum[zahl]=configFile.getString(num);
+								}
+								if(num.contains(".position")){
+									wplayer.position[zahl]=configFile.getString(num);
+								}
+									
+								
+								wplayer.reasonzahl=zahl+1;
+							}
+						}
+					}
+				}*/
+			
+		}
+	}
+	
+	
+	public String[] increaseArray(String[] theArray, int increaseBy)  
+	{  
+	    int i = theArray.length;  
+	    int n = ++i; 
+	    n=n+increaseBy;
+	    String[] newArray = new String[n];  
+	    for(int cnt=0;cnt<theArray.length;cnt++) 
+	    {  
+	        newArray[cnt] = theArray[cnt];  
+	    }  
+	    return newArray;  
+	}
+	
+	
+	
+	public void savetwo(){
+		
+		File file = new File(this.getDataFolder(),"savesalt.yml");
+		FileConfiguration configFile = YamlConfiguration.loadConfiguration(file);
+		File file2 = new File(this.getDataFolder(),"savesneu.yml");
+		FileConfiguration configFile2 = YamlConfiguration.loadConfiguration(file2);
+		
+		
+		int vps=0;
+		long time=0;
+		String gruli="";
+		
+		
+		String reason="";
+		String von="";
+		String datum="";
+		String position="";
+		
+		int lol=0;
+		int count=0;
 		
 		for(String player:configFile.getKeys(false)){
-			WPlayer wplayer= new WPlayer();
-			wplayer.setName(player);
-			wplayer.setVerwarnpunkt(configFile.getInt(player+".warnings"));
-			wplayer.ResTime=configFile.getLong(player+".time");
-			wplayer.Grundliste=configFile.getString(player+".resonList");
+			if(!player.equalsIgnoreCase("null")){
+				
+				count=0;
+				
+				//WPlayer wplayer= new WPlayer();
+				//wplayer.setName(player);
+				//wplayer.setVerwarnpunkt(configFile.getInt(player+".warnings"));
+				//wplayer.ResTime=configFile.getLong(player+".time");
+				//wplayer.Grundliste=configFile.getString(player+".resonList");
+				
+				
+				vps=configFile.getInt(player+".warnings");
+				time=configFile.getLong(player+".time");
+				gruli=configFile.getString(player+".resonList");
+				
+				configFile2.set(player+".warnings",vps);
+				configFile2.set(player+".time",time);
+				
+				System.out.println("!!!!!!!!!!!!!!!"+player);
+				
+				
+				String[] getreasonzahlTEXT = gruli.split("[ ]");
+				int reasonzahl=0;
+				
+				for (int a=0; a<getreasonzahlTEXT.length; a++){
+					if(getreasonzahlTEXT[a].startsWith("|")){
+						reasonzahl++;
+					}
+				}
+				configFile2.set(player+".reasonzahl",reasonzahl);
+				
+				
+				String[] result = gruli.split("[ ]");
+				for (int x=0; x<result.length; x++){
+					if(!result[x].equals(null)){
+						lol=0;
+						if(result[x].startsWith("|wegen--->")){
+							if(lol==0){
+								reason=result[x].replace("|wegen--->", "");
+								von=result[x+1].replace("von--->", "");
+								datum=result[x+2].replace("am--->", "");
+								position=result[x+3].replace("Ort_der_Bestrafung--->", "").replace("|", "");
+								
+								
+								configFile2.set(player+".resonList."+count+".reason", reason);
+								configFile2.set(player+".resonList."+count+".von", von);
+								configFile2.set(player+".resonList."+count+".datum", datum);
+								configFile2.set(player+".resonList."+count+".position", position);
+								count=count+1;
+								lol=1;
+							}
+						}else if(result[x].startsWith("|") && result[x].endsWith("|")){
+							if(lol==0){
+								reason=result[x].replace("|", "");
+								von="unknown";
+								datum="unknown";
+								position="unknown";
+								
+								
+								
+								configFile2.set(player+".resonList."+count+".reason", reason);
+								configFile2.set(player+".resonList."+count+".von", von);
+								configFile2.set(player+".resonList."+count+".datum", datum);
+								configFile2.set(player+".resonList."+count+".position", position);
+								count=count+1;
+								lol=1;
+							}
+						}else if(result[x].startsWith("|")){
+							if(lol==0){
+						
+								reason=result[x].replace("|", "");
+								von=result[x+2];
+								datum=result[x+4]+"/"+result[x+5];
+								position=result[x+6].replace("|", "");
+								
+								
+								configFile2.set(player+".resonList."+count+".reason", reason);
+								configFile2.set(player+".resonList."+count+".von", von);
+								configFile2.set(player+".resonList."+count+".datum", datum);
+								configFile2.set(player+".resonList."+count+".position", position);
+								count=count+1;
+								lol=1;
+							
+							}
+						}
+						
+						//configFile2.set(player+".reasonzahl",count);
+						System.out.println("------------------");
+						System.out.println(reason);
+						System.out.println(von);
+						System.out.println(datum);
+						System.out.println(position);
+						
+						
+						
+						 
+						 
+						//if(result[x].endsWith("|")){
+							//System.out.println("Stop");
+						//}
+					}
+				}
+				
+				
+				
+				
+				
+				
+				
+				
+			}
 		}
+		
+		
+		
+		try {
+			configFile2.save(file2);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
 	}
 	
 	

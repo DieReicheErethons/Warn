@@ -1,5 +1,5 @@
 name: Warn
-version: 0.1
+version: 0.2
 main: com.dre.warn.warn
 softdepend: [Vault]
 commands:
