@@ -16,7 +16,6 @@ public class WPlayer {
 	public String[] datum;
 	public String[] position;
 	
-	
 	public static Set<WPlayer> WPlayers=new HashSet<WPlayer>();
 	
 	public WPlayer(){
@@ -28,8 +27,6 @@ public class WPlayer {
 		this.datum = new String[30];
 		this.position = new String[30];
 	}
-	
-	
 	
 	public void addPunkt(){
 		this.setVerwarnpunkt(this.getVerwarnpunkt()+1);
@@ -55,25 +52,15 @@ public class WPlayer {
 				
 	}
 
-	
-
 	public int getVerwarnPunkte() {
 		return this.getVerwarnpunkt();
 	}
-
-
 
 	public int getVerwarnpunkt() {
 		return Verwarnpunkt;
 	}
 
-
-
 	public void setVerwarnpunkt(int verwarnpunkt) {
 		Verwarnpunkt = verwarnpunkt;
 	}
-	
-	
-	
-	
 }

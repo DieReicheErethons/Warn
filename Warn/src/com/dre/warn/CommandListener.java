@@ -27,9 +27,7 @@ public class CommandListener implements CommandExecutor {
 	
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String nothing, String[] args) {
-		//warn.w.getServer().getLogger().log(Level.INFO,cmd.getName());
 		if(nothing.equalsIgnoreCase("warn")){
-			//warn.w.getServer().getLogger().log(Level.INFO,"command warn startet");
 			Player player2=null;
 			this.playerAlredyExists=false;
 			this.Grund="";
@@ -79,22 +77,13 @@ public class CommandListener implements CommandExecutor {
 					}
 				}else if(args[0].equalsIgnoreCase("info")){
 					if(this.isPlayer){
-						
 						//Normaler Spieler
-						
-						
-					
 						if(!warn.perms.playerHas(player2, "warn.admin") && !warn.perms.playerHas(player2, "warn.mod") && !sender.isOp()){
-							
-							//System.out.print("AHA SOSSO");
-							
 							if(warn.perms.playerHas(player2, "warn.user")){
 								for(WPlayer wplayer:WPlayer.WPlayers){
 									if(wplayer.player.equalsIgnoreCase(sender.getName())){
 										sender.sendMessage(ChatColor.GREEN+"[WarnDRE] Info zu "+wplayer.player+":");
 										sender.sendMessage(ChatColor.YELLOW+"User: "+wplayer.player+" hat "+wplayer.getVerwarnpunkt()+" Punkte");
-										//sender.sendMessage(ChatColor.YELLOW+"--->  "+wplayer.Grundliste);
-										
 										
 										int reasonzahldividiert=0;
 										if((wplayer.reasonzahl % 3)==0){
@@ -116,10 +105,7 @@ public class CommandListener implements CommandExecutor {
 														sender.sendMessage(ChatColor.YELLOW+"Datum:         "+wplayer.datum[inc]);
 														sender.sendMessage(ChatColor.YELLOW+"Position:       "+wplayer.position[inc]);								
 														sender.sendMessage(ChatColor.YELLOW+"-------------------------------------------------");							
-													}else{
-														//sender.sendMessage(ChatColor.YELLOW+"Auf dieser Seite sind keine Einträge!");
 													}
-													
 												}
 												if(inc==((Integer.parseInt(args[1])-1)*3)){
 													sender.sendMessage(ChatColor.YELLOW+"Auf dieser Seite sind keine Einträge!");
@@ -137,10 +123,7 @@ public class CommandListener implements CommandExecutor {
 													sender.sendMessage(ChatColor.YELLOW+"Datum:         "+wplayer.datum[inc]);
 													sender.sendMessage(ChatColor.YELLOW+"Position:       "+wplayer.position[inc]);								
 													sender.sendMessage(ChatColor.YELLOW+"-------------------------------------------------");							
-												}else{
-													//sender.sendMessage(ChatColor.YELLOW+"Auf dieser Seite sind keine Einträge!");
 												}
-												
 											}
 											if(inc==0){
 												sender.sendMessage(ChatColor.YELLOW+"Auf dieser Seite sind keine Einträge!");
@@ -158,27 +141,17 @@ public class CommandListener implements CommandExecutor {
 								sender.sendMessage(ChatColor.GREEN+"[WarnDRE]:"+ChatColor.RED+"Keine Berechtigung für diesen CMD");
 							}
 						}else{
-							
-							
-							
-							
-							
-							
-							
 							//Admins Mods und OPs
-							
-							
 							int foundsearchplayer=0;
 							
 							for(WPlayer wplayer:WPlayer.WPlayers){
-								//System.out.print(args.length);
 								if(args.length>1){
-								//	System.out.print(args[1]+"!!!!!!"+wplayer.player);
 									if(wplayer.player.equalsIgnoreCase(args[1])){
 										sender.sendMessage(ChatColor.GREEN+"[WarnDRE] Info zu "+wplayer.player+":");
 										sender.sendMessage(ChatColor.YELLOW+"User: "+wplayer.player+" hat "+wplayer.getVerwarnpunkt()+" Punkte");
-										//sender.sendMessage(ChatColor.YELLOW+"--->  "+wplayer.Grundliste);
+										
 										int reasonzahldividiert=0;
+										
 										if((wplayer.reasonzahl % 3)==0){
 											reasonzahldividiert=(wplayer.reasonzahl / 3);
 											
@@ -187,14 +160,11 @@ public class CommandListener implements CommandExecutor {
 											reasonzahldividiert++;
 										}
 										
-										
-										//System.out.print("hallo!!!!!!!!!!");
-										
-										
 										if(args.length > 2){
 											sender.sendMessage(ChatColor.GREEN+"[--------------------["+args[2]+"/"+reasonzahldividiert+"]----------------------]");
 											if(args[2].matches("[0-9]+")&& args[2].length()<6){
 												int inc;
+												
 												for(inc=((Integer.parseInt(args[2])-1)*3);inc<(Integer.parseInt(args[2])*3);inc++){
 													if(inc<wplayer.reasonzahl){
 														sender.sendMessage(ChatColor.YELLOW+"Grund:         "+wplayer.reason[inc]);
@@ -202,11 +172,9 @@ public class CommandListener implements CommandExecutor {
 														sender.sendMessage(ChatColor.YELLOW+"Datum:         "+wplayer.datum[inc]);
 														sender.sendMessage(ChatColor.YELLOW+"Position:       "+wplayer.position[inc]);								
 														sender.sendMessage(ChatColor.YELLOW+"-------------------------------------------------");							
-													}else{
-														//sender.sendMessage(ChatColor.YELLOW+"Auf dieser Seite sind keine Einträge!");
 													}
-													
 												}
+												
 												if(inc==((Integer.parseInt(args[2])-1)*3)){
 													sender.sendMessage(ChatColor.YELLOW+"Auf dieser Seite sind keine Einträge!");
 												}
@@ -216,6 +184,7 @@ public class CommandListener implements CommandExecutor {
 										}else{
 											sender.sendMessage(ChatColor.GREEN+"[--------------------[1/"+reasonzahldividiert+"]----------------------]");
 											int inc;
+											
 											for(inc=0;inc<3;inc++){
 												if(inc<wplayer.reasonzahl){
 													sender.sendMessage(ChatColor.YELLOW+"Grund:         "+wplayer.reason[inc]);
@@ -223,35 +192,20 @@ public class CommandListener implements CommandExecutor {
 													sender.sendMessage(ChatColor.YELLOW+"Datum:         "+wplayer.datum[inc]);
 													sender.sendMessage(ChatColor.YELLOW+"Position:       "+wplayer.position[inc]);								
 													sender.sendMessage(ChatColor.YELLOW+"-------------------------------------------------");							
-												}else{
-													//sender.sendMessage(ChatColor.YELLOW+"Auf dieser Seite sind keine Einträge!");
 												}
-												
 											}
+											
 											if(inc==0){
 												sender.sendMessage(ChatColor.YELLOW+"Auf dieser Seite sind keine Einträge!");
 											}
-											
 										}
 										
-										//this.foundplayer=true;
 										foundsearchplayer=1;
-										
-										
 									}
-									
-									
-									
 								}else{
-									
 									if(wplayer.player.equals(sender.getName())){
 										sender.sendMessage(ChatColor.GREEN+"[WarnDRE] Info zu "+wplayer.player+":");
 										sender.sendMessage(ChatColor.YELLOW+"User: "+wplayer.player+" hat "+wplayer.getVerwarnpunkt()+" Punkte");
-										//sender.sendMessage(ChatColor.YELLOW+"--->  "+wplayer.Grundliste);
-										
-										
-										
-										
 										
 										sender.sendMessage(ChatColor.GREEN+"[------------------------------------------------]");
 										int inc;
@@ -262,23 +216,18 @@ public class CommandListener implements CommandExecutor {
 												sender.sendMessage(ChatColor.YELLOW+"Datum:         "+wplayer.datum[inc]);
 												sender.sendMessage(ChatColor.YELLOW+"Position:       "+wplayer.position[inc]);								
 												sender.sendMessage(ChatColor.YELLOW+"-------------------------------------------------");							
-											}else{
-												//sender.sendMessage(ChatColor.YELLOW+"Auf dieser Seite sind keine Einträge!");
 											}
-											
 										}
+										
 										if(inc==0){
 											sender.sendMessage(ChatColor.YELLOW+"Auf dieser Seite sind keine Einträge!");
 										}
-											
 										
 										this.foundplayer=true;
 									}
-									
 								}
-								
-								
 							}
+							
 							if(args.length>1){
 								if(foundsearchplayer==0){
 									sender.sendMessage(ChatColor.GREEN+"[WarnDRE] Info zu "+args[1]+":");
@@ -289,347 +238,8 @@ public class CommandListener implements CommandExecutor {
 									sender.sendMessage(ChatColor.GREEN+"[WarnDRE] Info zu "+sender.getName()+":");
 									sender.sendMessage(ChatColor.YELLOW+"User: "+sender.getName()+" hat noch keine Strafen.");
 								}
-							}
-							
-							
-								
-						}		
-								/*if(wplayer.player.equals(args[1])){
-									sender.sendMessage(ChatColor.GREEN+"[WarnDRE] Info zu "+wplayer.player+":");
-									sender.sendMessage(ChatColor.YELLOW+"User: "+wplayer.player+" hat "+wplayer.getVerwarnpunkt()+" Punkte");
-									//sender.sendMessage(ChatColor.YELLOW+"--->  "+wplayer.Grundliste);
-									int reasonzahldividiert=0;
-									if((wplayer.reasonzahl % 3)==0){
-										reasonzahldividiert=(wplayer.reasonzahl / 3);
-										
-									}else{
-										reasonzahldividiert=(wplayer.reasonzahl / 3);
-										reasonzahldividiert++;
-									}
-									
-									if(args.length > 2){
-										sender.sendMessage(ChatColor.GREEN+"[--------------------["+args[2]+"/"+reasonzahldividiert+"]----------------------]");
-										if(Integer.parseInt(args[2])>0 &&Integer.parseInt(args[2])<10000 ){
-											int inc;
-											for(inc=((Integer.parseInt(args[2])-1)*3);inc<(Integer.parseInt(args[2])*3);inc++){
-												if(inc<wplayer.reasonzahl){
-													sender.sendMessage(ChatColor.YELLOW+"Grund:         "+wplayer.reason[inc]);
-													sender.sendMessage(ChatColor.YELLOW+"Von:            "+wplayer.von[inc]);
-													sender.sendMessage(ChatColor.YELLOW+"Datum:         "+wplayer.datum[inc]);
-													sender.sendMessage(ChatColor.YELLOW+"Position:       "+wplayer.position[inc]);								
-													sender.sendMessage(ChatColor.YELLOW+"-------------------------------------------------");							
-												}else{
-													//sender.sendMessage(ChatColor.YELLOW+"Auf dieser Seite sind keine Einträge!");
-												}
-												
-											}
-											if(inc==((Integer.parseInt(args[2])-1)*3)){
-												sender.sendMessage(ChatColor.YELLOW+"Auf dieser Seite sind keine Einträge!");
-											}
-										}
-									}else{
-										sender.sendMessage(ChatColor.GREEN+"[--------------------[1/"+reasonzahldividiert+"]----------------------]");
-										int inc;
-										for(inc=0;inc<3;inc++){
-											if(inc<wplayer.reasonzahl){
-												sender.sendMessage(ChatColor.YELLOW+"Grund:         "+wplayer.reason[inc]);
-												sender.sendMessage(ChatColor.YELLOW+"Von:            "+wplayer.von[inc]);
-												sender.sendMessage(ChatColor.YELLOW+"Datum:         "+wplayer.datum[inc]);
-												sender.sendMessage(ChatColor.YELLOW+"Position:       "+wplayer.position[inc]);								
-												sender.sendMessage(ChatColor.YELLOW+"-------------------------------------------------");							
-											}else{
-												//sender.sendMessage(ChatColor.YELLOW+"Auf dieser Seite sind keine Einträge!");
-											}
-											
-										}
-										if(inc==((Integer.parseInt(args[2])-1)*3)){
-											sender.sendMessage(ChatColor.YELLOW+"Auf dieser Seite sind keine Einträge!");
-										}
-										
-									}
-									
-									/*
-									this.GruList=wplayer.Grundliste.split("[ ]");
-									
-									
-									for(int inc=0;inc<this.GruList.length;inc++){
-										if (!this.GruList[inc].equals(" ")){
-											if (!this.GruList[inc].equals("  ")){
-												if (!this.GruList[inc].equals("am:")){
-													if (!this.GruList[inc].equals("um:")){
-														if (!this.GruList[inc].equals("von:")){
-															if(this.GruList[inc].contains("|") && (!this.GruList[inc].contains("POS"))){
-																sender.sendMessage(ChatColor.YELLOW+" ");
-															}												
-															sender.sendMessage(ChatColor.YELLOW+this.GruList[inc]);
-														}
-													}
-												}
-											}
-										}
-									}
-									*/
-									
-									/*{
-										
-										this.GruListPart=this.GruList.substring(0, this.GruList.indexOf(" "));
-										this.GruList=this.GruList.substring(this.GruList.indexOf(" ")+2);
-										//sender.sendMessage(ChatColor.YELLOW+"--->  "+this.GruListPart);
-										sender.sendMessage(ChatColor.YELLOW+"--->  "+this.GruList.indexOf(" "));
-										
-									}while(this.GruList.contains(' '));
-									*/
-									
-									
-									//this.GruListPart=this.GruList.substring(this.GruList.indexOf("|")+1,this.GruList.indexOf(" ",this.GruList.indexOf("|")));
-									//sender.sendMessage(ChatColor.YELLOW+"--->  "+this.GruListPart);
-									
-									//this.GruListPart=this.GruList.substring(this.GruList.indexOf(" ",this.GruList.indexOf("|"))+1,this.GruList.indexOf(" ",this.GruList.indexOf("|")));
-									//sender.sendMessage(ChatColor.YELLOW+"--->  "+this.GruListPart);
-									
-							/*		this.foundplayer=true;
-								}
-									
-							}
-							if(this.foundplayer==false){
-								sender.sendMessage(ChatColor.GREEN+"[WarnDRE] Info zu "+args[1]+":");
-								sender.sendMessage(ChatColor.YELLOW+"User: "+args[1]+" hat noch keine Strafen.");
-							}
-							
-							
-							
-							
-							
-							
-							
-							
-							
-							
-							
-							
+							}	
 						}
-							if(args.length > 1){
-								if(warn.perms.playerHas(player2, "warn.admin") || warn.perms.playerHas(player2, "warn.mod") || sender.isOp()){
-									for(WPlayer wplayer:WPlayer.WPlayers){
-										if(wplayer.player.equals(args[1])){
-											sender.sendMessage(ChatColor.GREEN+"[WarnDRE] Info zu "+wplayer.player+":");
-											sender.sendMessage(ChatColor.YELLOW+"User: "+wplayer.player+" hat "+wplayer.getVerwarnpunkt()+" Punkte");
-											//sender.sendMessage(ChatColor.YELLOW+"--->  "+wplayer.Grundliste);
-											int reasonzahldividiert=0;
-											if((wplayer.reasonzahl % 3)==0){
-												reasonzahldividiert=(wplayer.reasonzahl / 3);
-												
-											}else{
-												reasonzahldividiert=(wplayer.reasonzahl / 3);
-												reasonzahldividiert++;
-											}
-											
-											if(args.length > 2){
-												sender.sendMessage(ChatColor.GREEN+"[--------------------["+args[2]+"/"+reasonzahldividiert+"]----------------------]");
-												if(Integer.parseInt(args[2])>0 &&Integer.parseInt(args[2])<10000 ){
-													int inc;
-													for(inc=((Integer.parseInt(args[2])-1)*3);inc<(Integer.parseInt(args[2])*3);inc++){
-														if(inc<wplayer.reasonzahl){
-															sender.sendMessage(ChatColor.YELLOW+"Grund:         "+wplayer.reason[inc]);
-															sender.sendMessage(ChatColor.YELLOW+"Von:            "+wplayer.von[inc]);
-															sender.sendMessage(ChatColor.YELLOW+"Datum:         "+wplayer.datum[inc]);
-															sender.sendMessage(ChatColor.YELLOW+"Position:       "+wplayer.position[inc]);								
-															sender.sendMessage(ChatColor.YELLOW+"-------------------------------------------------");							
-														}else{
-															//sender.sendMessage(ChatColor.YELLOW+"Auf dieser Seite sind keine Einträge!");
-														}
-														
-													}
-													if(inc==((Integer.parseInt(args[2])-1)*3)){
-														sender.sendMessage(ChatColor.YELLOW+"Auf dieser Seite sind keine Einträge!");
-													}
-												}
-											}else{
-												sender.sendMessage(ChatColor.GREEN+"[--------------------[1/"+reasonzahldividiert+"]----------------------]");
-												int inc;
-												for(inc=0;inc<3;inc++){
-													if(inc<wplayer.reasonzahl){
-														sender.sendMessage(ChatColor.YELLOW+"Grund:         "+wplayer.reason[inc]);
-														sender.sendMessage(ChatColor.YELLOW+"Von:            "+wplayer.von[inc]);
-														sender.sendMessage(ChatColor.YELLOW+"Datum:         "+wplayer.datum[inc]);
-														sender.sendMessage(ChatColor.YELLOW+"Position:       "+wplayer.position[inc]);								
-														sender.sendMessage(ChatColor.YELLOW+"-------------------------------------------------");							
-													}else{
-														//sender.sendMessage(ChatColor.YELLOW+"Auf dieser Seite sind keine Einträge!");
-													}
-													
-												}
-												if(inc==((Integer.parseInt(args[2])-1)*3)){
-													sender.sendMessage(ChatColor.YELLOW+"Auf dieser Seite sind keine Einträge!");
-												}
-												
-											}
-											
-											/*
-											this.GruList=wplayer.Grundliste.split("[ ]");
-											
-											
-											for(int inc=0;inc<this.GruList.length;inc++){
-												if (!this.GruList[inc].equals(" ")){
-													if (!this.GruList[inc].equals("  ")){
-														if (!this.GruList[inc].equals("am:")){
-															if (!this.GruList[inc].equals("um:")){
-																if (!this.GruList[inc].equals("von:")){
-																	if(this.GruList[inc].contains("|") && (!this.GruList[inc].contains("POS"))){
-																		sender.sendMessage(ChatColor.YELLOW+" ");
-																	}												
-																	sender.sendMessage(ChatColor.YELLOW+this.GruList[inc]);
-																}
-															}
-														}
-													}
-												}
-											}
-											*/
-											
-											/*{
-												
-												this.GruListPart=this.GruList.substring(0, this.GruList.indexOf(" "));
-												this.GruList=this.GruList.substring(this.GruList.indexOf(" ")+2);
-												//sender.sendMessage(ChatColor.YELLOW+"--->  "+this.GruListPart);
-												sender.sendMessage(ChatColor.YELLOW+"--->  "+this.GruList.indexOf(" "));
-												
-											}while(this.GruList.contains(' '));
-											*/
-											
-											
-											//this.GruListPart=this.GruList.substring(this.GruList.indexOf("|")+1,this.GruList.indexOf(" ",this.GruList.indexOf("|")));
-											//sender.sendMessage(ChatColor.YELLOW+"--->  "+this.GruListPart);
-											
-											//this.GruListPart=this.GruList.substring(this.GruList.indexOf(" ",this.GruList.indexOf("|"))+1,this.GruList.indexOf(" ",this.GruList.indexOf("|")));
-											//sender.sendMessage(ChatColor.YELLOW+"--->  "+this.GruListPart);
-											
-									/*		this.foundplayer=true;
-										}
-											
-									}
-									if(this.foundplayer==false){
-										sender.sendMessage(ChatColor.GREEN+"[WarnDRE] Info zu "+args[1]+":");
-										sender.sendMessage(ChatColor.YELLOW+"User: "+args[1]+" hat noch keine Strafen.");
-									}
-								}else if(warn.perms.playerHas(player2, "warn.user")){
-									sender.sendMessage(ChatColor.GREEN+"[WarnDRE]: "+ChatColor.WHITE+"Versuche /warn info");
-								}else{
-									sender.sendMessage(ChatColor.GREEN+"[WarnDRE]: "+ChatColor.RED+"Du hast keine Berechtigung auf diesem CMD");
-								}
-							}else{
-								if(warn.perms.playerHas(player2, "warn.admin") || warn.perms.playerHas(player2, "warn.mod") || warn.perms.playerHas(player2, "warn.user") || sender.isOp()){
-									for(WPlayer wplayer:WPlayer.WPlayers){
-										if(wplayer.player.equals(sender.getName())){
-											sender.sendMessage(ChatColor.GREEN+"[WarnDRE] Info zu "+wplayer.player+":");
-											sender.sendMessage(ChatColor.YELLOW+"User: "+wplayer.player+" hat "+wplayer.getVerwarnpunkt()+" Punkte");
-											//sender.sendMessage(ChatColor.YELLOW+"--->  "+wplayer.Grundliste);
-											
-											
-											int reasonzahldividiert=0;
-											if((wplayer.reasonzahl % 3)==0){
-												reasonzahldividiert=(wplayer.reasonzahl / 3);
-												
-											}else{
-												reasonzahldividiert=(wplayer.reasonzahl / 3);
-												reasonzahldividiert++;
-											}
-											
-											if(args.length > 1){
-												sender.sendMessage(ChatColor.GREEN+"[--------------------["+args[1]+"/"+reasonzahldividiert+"]----------------------]");
-												if(Integer.parseInt(args[1])>0 &&Integer.parseInt(args[1])<10000 ){
-													int inc;
-													for(inc=((Integer.parseInt(args[1])-1)*3);inc<(Integer.parseInt(args[1])*3);inc++){
-														if(inc<wplayer.reasonzahl){
-															sender.sendMessage(ChatColor.YELLOW+"Grund:         "+wplayer.reason[inc]);
-															sender.sendMessage(ChatColor.YELLOW+"Von:            "+wplayer.von[inc]);
-															sender.sendMessage(ChatColor.YELLOW+"Datum:         "+wplayer.datum[inc]);
-															sender.sendMessage(ChatColor.YELLOW+"Position:       "+wplayer.position[inc]);								
-															sender.sendMessage(ChatColor.YELLOW+"-------------------------------------------------");							
-														}else{
-															//sender.sendMessage(ChatColor.YELLOW+"Auf dieser Seite sind keine Einträge!");
-														}
-														
-													}
-													if(inc==((Integer.parseInt(args[1])-1)*3)){
-														sender.sendMessage(ChatColor.YELLOW+"Auf dieser Seite sind keine Einträge!");
-													}
-												}
-											}else{
-												sender.sendMessage(ChatColor.GREEN+"[--------------------[1/"+reasonzahldividiert+"]----------------------]");
-												int inc;
-												for(inc=0;inc<3;inc++){
-													if(inc<wplayer.reasonzahl){
-														sender.sendMessage(ChatColor.YELLOW+"Grund:         "+wplayer.reason[inc]);
-														sender.sendMessage(ChatColor.YELLOW+"Von:            "+wplayer.von[inc]);
-														sender.sendMessage(ChatColor.YELLOW+"Datum:         "+wplayer.datum[inc]);
-														sender.sendMessage(ChatColor.YELLOW+"Position:       "+wplayer.position[inc]);								
-														sender.sendMessage(ChatColor.YELLOW+"-------------------------------------------------");							
-													}else{
-														//sender.sendMessage(ChatColor.YELLOW+"Auf dieser Seite sind keine Einträge!");
-													}
-													
-												}
-												if(inc==((Integer.parseInt(args[2])-1)*3)){
-													sender.sendMessage(ChatColor.YELLOW+"Auf dieser Seite sind keine Einträge!");
-												}
-												
-											}
-											
-											
-											
-											/*for(int inc=0;inc<wplayer.reasonzahl;inc++){
-												
-												sender.sendMessage(ChatColor.YELLOW+"Grund:         "+wplayer.reason[inc]);
-												sender.sendMessage(ChatColor.YELLOW+"Von:            "+wplayer.von[inc]);
-												sender.sendMessage(ChatColor.YELLOW+"Datum:         "+wplayer.datum[inc]);
-												sender.sendMessage(ChatColor.YELLOW+"Position:       "+wplayer.position[inc]);								
-												sender.sendMessage(ChatColor.YELLOW+"-------------------------------------------------");	
-											}*/
-											
-											
-											
-											
-											
-											
-											//this.GruList=wplayer.Grundliste.split("[ ]");
-											
-											
-											/*for(int inc=0;inc<this.GruList.length;inc++){
-												if (!this.GruList[inc].equals(" ")){
-													if (!this.GruList[inc].equals("  ")){
-														if (!this.GruList[inc].equals("am:")){
-															if (!this.GruList[inc].equals("um:")){
-																if (!this.GruList[inc].equals("von:")){
-																	if(this.GruList[inc].contains("|") && (!this.GruList[inc].contains("POS"))){
-																		sender.sendMessage(ChatColor.YELLOW+" ");
-																	}												
-																	sender.sendMessage(ChatColor.YELLOW+this.GruList[inc]);
-																}
-															}
-														}
-													}
-												}
-											}*/
-											
-											
-											
-											
-									/*		
-											this.foundplayer=true;
-										}
-											
-									}
-			
-									if(this.foundplayer==false){
-										sender.sendMessage(ChatColor.GREEN+"[WarnDRE] Info zu "+sender.getName()+":");
-										sender.sendMessage(ChatColor.YELLOW+"User: "+sender.getName()+" hat noch keine Strafen.");
-									}
-							}else{
-								sender.sendMessage(ChatColor.GREEN+"[WarnDRE]: "+ChatColor.RED+"Du hast keine Berechtigung auf diesem CMD");
-								
-							}*/
-						
 					}else{
 						warn.w.getServer().getLogger().log(Level.INFO,"[WarnDRE]InfoCMD");
 					}
@@ -646,44 +256,17 @@ public class CommandListener implements CommandExecutor {
 					}
 				}else if(args[0].equalsIgnoreCase("grief")){
 					if(this.isPlayer){
-						
 						warn.savegrief(sender.getName(), player2.getLocation().getBlockX(), player2.getLocation().getBlockY(), player2.getLocation().getBlockZ());
 						sender.sendMessage(ChatColor.GREEN+"[WarnDRE] "+ChatColor.YELLOW+"Grief gemeldet, und Name und Position Gespeichert");
-						
 					}
 				}else if(args[0].equalsIgnoreCase("savetwo")){
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
 					warn.w.savetwo();
-					
-					
-					
-					
-					
-					
-					
-					
 				}else if(args[0].equalsIgnoreCase("tpgrief")){
 					if(warn.perms.playerHas(player2, "warn.admin") || sender.isOp()){
-						
 						this.Grief=warn.loadgrief().split("[|]");
 						if(this.Grief[2].equalsIgnoreCase("0")){
 							sender.sendMessage(ChatColor.GREEN+"[WarnDRE] "+ChatColor.YELLOW+"Es wurden keine neuen Griefs gemeldet");
 						}else{
-							
 							sender.sendMessage(ChatColor.GREEN+"[WarnDRE] "+ChatColor.YELLOW+"Grief gemeldet von: "+this.Grief[0]+" an der Position X:"+this.Grief[1]+" Y:"+this.Grief[2]+" Z:"+this.Grief[3]);
 							player2=(Player) sender;
 							Bukkit.dispatchCommand(player2, "tploc "+this.Grief[1]+" "+this.Grief[2]+" "+this.Grief[3]);
@@ -693,16 +276,11 @@ public class CommandListener implements CommandExecutor {
 				}else if(args[0].equalsIgnoreCase("chat")){
 					if(this.isPlayer){
 						player2=(Player) sender;
-						
-						//////////////////////////////////HSajsfklsdhfkalsödkfasdfasdölkf    Chat
-						
-						
 					}
 				}else{
 					
 					if(warn.perms.playerHas(player2, "warn.admin") || warn.perms.has(player2, "warn.mod") || sender.isOp()){
 						if(args.length>1){
-							//warn.w.getServer().getLogger().log(Level.INFO,"perms gehen");
 							//Wenn bereits Verwarnt
 							for(WPlayer wplayer:WPlayer.WPlayers){
 								if(wplayer.player.equals(args[0])){
@@ -719,19 +297,11 @@ public class CommandListener implements CommandExecutor {
 								this.PLAYER=wplayer;
 							}
 							
-							
-							
 							java.util.Date now=new java.util.Date();
 							java.text.SimpleDateFormat date=new java.text.SimpleDateFormat("dd.MM.yyyy/hh.mm.ss");
 							
 							if(args.length>1){
 								this.Grund=args[1];
-								//this.PLAYER.Grundliste=this.PLAYER.Grundliste+" |wegen--->"+args[1]+" von--->"+sender.getName()+" am--->"+date.format(now)+" Ort_der_Bestrafung--->POS("+player2.getLocation().getBlockX()+","+player2.getLocation().getBlockY()+","+player2.getLocation().getBlockZ()+")|";
-								
-								//this.PLAYER.reason= warn.w.increaseArray(this.PLAYER.reason, 2);
-								//this.PLAYER.von= warn.w.increaseArray(this.PLAYER.von, 2);
-								//this.PLAYER.datum= warn.w.increaseArray(this.PLAYER.datum, 2);
-								//this.PLAYER.position= warn.w.increaseArray(this.PLAYER.position, 2);
 								
 								if(PLAYER.reasonzahl > PLAYER.reason.length){
 									PLAYER.reason= warn.w.increaseArray(PLAYER.reason, 10);
@@ -746,9 +316,6 @@ public class CommandListener implements CommandExecutor {
 									PLAYER.position= warn.w.increaseArray(PLAYER.position, 10);
 								}
 								
-								
-								
-								
 								this.PLAYER.reason[PLAYER.reasonzahl]=args[1];
 								this.PLAYER.von[PLAYER.reasonzahl]=sender.getName();
 								this.PLAYER.datum[PLAYER.reasonzahl]=date.format(now);
@@ -759,20 +326,15 @@ public class CommandListener implements CommandExecutor {
 								this.PLAYER.Grundliste=this.PLAYER.Grundliste+"   |UNKNOWN von: "+sender.getName()+" am: "+date.format(now)+"|";
 							}
 							
-							
-							
-							
 							ConsoleCommandSender consolesender=warn.w.getServer().getConsoleSender();
-							//warn.w.getServer().dispatchCommand(consolesender, "say /jail ");
 							
 							String[] listarray;
 							
 							for(ConfVerwarnung confVerwarnungen:ConfVerwarnung.ConfVerwarnungen){
-								//warn.w.getServer().dispatchCommand(consolesender, "say /jail "+this.PLAYER.getVerwarnpunkt()+"!"+confVerwarnungen.Nummer);
 								if(this.PLAYER.getVerwarnpunkt() == confVerwarnungen.Nummer){
 									for(String list:confVerwarnungen.BefehlListe){
-										//strreplace
 										listarray=list.split(" ");
+										
 										for(int i=0;i<listarray.length;i++){
 											if(listarray[i].equalsIgnoreCase("*Name*")){
 												listarray[i]=args[0].toLowerCase();
@@ -781,19 +343,14 @@ public class CommandListener implements CommandExecutor {
 												listarray[i]=this.Grund;
 											}
 										}
+										
 										list=listarray[0];
+										
 										for(int i=1;i<listarray.length;i++){
 											list=list+" "+listarray[i];
 										}
 										
-										
 										warn.w.getServer().dispatchCommand(consolesender,list);
-										
-										//warn.w.getServer().dispatchCommand(consolesender,"say "+list);
-										
-										
-									//	warn.w.getServer().getLogger().log(Level.INFO,"log3 gehen");
-										
 									}
 									if(this.isPlayer){
 										sender.sendMessage(ChatColor.GREEN+"[WarnDRE]: "+ChatColor.WHITE+"Der Spieler "+this.PLAYER.player+" wurde erfolgreich Bestraft. Er hat "+this.PLAYER.getVerwarnpunkt()+" VerwarnPunkte.");
@@ -815,16 +372,6 @@ public class CommandListener implements CommandExecutor {
 					
 					}
 				}
-				
-				
-				
-				//warn.w.getServer().dispatchCommand(consolesender, "say /jail "+warn.ResetTime+" "+this.JailTime+" "+this.Grund);
-				
-				
-				
-				
-				
-				
 			}else{
 				if(this.isPlayer){
 					sender.sendMessage(ChatColor.GREEN+"[WarnDRE] "+ChatColor.WHITE+"/warn help");
@@ -833,16 +380,9 @@ public class CommandListener implements CommandExecutor {
 				}
 			}
 				
-				
-				
 			warn.save();
-		
 		}
 		
 		return false;
 	}
-	
-	
-	
-
 }
