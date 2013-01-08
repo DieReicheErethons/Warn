@@ -4,6 +4,8 @@ import java.util.Set;
 
 
 public class WPlayer {
+	private P p = P.p;
+	
 	public String player;
 	private int Verwarnpunkt;
 	public long ResTime;
@@ -31,7 +33,7 @@ public class WPlayer {
 	public void addPunkt(){
 		this.setVerwarnpunkt(this.getVerwarnpunkt()+1);
 		this.ResTime=System.currentTimeMillis();
-		warn.save();
+		p.save();
 	}
 	public void remPunkt(){
 		this.setVerwarnpunkt(this.getVerwarnpunkt()-1);
@@ -40,7 +42,7 @@ public class WPlayer {
 		if(this.getVerwarnpunkt() < 0){
 			this.setVerwarnpunkt(0);
 		}
-		warn.save();
+		p.save();
 	}
 	
 	public void setName(String name){

@@ -1,8 +1,8 @@
 name: Warn
 version: 0.2
-main: com.dre.warn.warn
+main: com.dre.warn.P
 softdepend: [Vault]
 commands:
  warn:
-  description: PunishPlayers
+  description: Punish Players
   aliases: [pun]

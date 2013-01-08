@@ -13,28 +13,28 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import net.milkbowl.vault.permission.Permission;
 
-public class warn extends JavaPlugin{
-	public static warn w;
+public class P extends JavaPlugin{
+	public static P p;
 	
-	public static int ResetTime;
+	public int resetTime=0;
 	
 	@Override
 	public void onEnable(){
-		w=this;
+		p=this;
 		
 		this.load();
-		this.loadconfig();
-		warn.save();
+		this.loadConfig();
+		this.save();
 		
 		getCommand("warn").setExecutor(new CommandListener());
 		
 		/* Sheduler */
-		w.getServer().getScheduler().scheduleSyncRepeatingTask(w, new Runnable() {
+		this.getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
 		    public void run() {
 		    	for(WPlayer wplayer:WPlayer.WPlayers){
-		    		if((warn.ResetTime+wplayer.ResTime)<System.currentTimeMillis()){
+		    		if((p.resetTime+wplayer.ResTime)<System.currentTimeMillis()){
 		    			wplayer.remPunkt();
-		    			w.getServer().getLogger().log(Level.INFO,"[WarnDRE]punkt weg von "+wplayer.player);
+		    			p.getServer().getLogger().log(Level.INFO,"[WarnDRE]punkt weg von "+wplayer.player);
 		    		}
 		    	}
 		    	
@@ -43,11 +43,11 @@ public class warn extends JavaPlugin{
 		    }
 		}, 10000L, 10000L);
 		
-		w.setupPermissions();
+		this.setupPermissions();
 	}
 	
-	public static void save(){
-		File file = new File(warn.w.getDataFolder(),"saves.yml");
+	public void save(){
+		File file = new File(this.getDataFolder(),"saves.yml");
 		FileConfiguration configFile = new YamlConfiguration();
 		
 		for(WPlayer wplayer:WPlayer.WPlayers){
@@ -70,9 +70,8 @@ public class warn extends JavaPlugin{
 		}
 	}
 	
-	
-	public static void savegrief(String Name, double x, double y, double z){
-		File file = new File(warn.w.getDataFolder(),"Griefs/"+System.currentTimeMillis()+".yml");
+	public void saveGrief(String Name, double x, double y, double z){
+		File file = new File(this.getDataFolder(),"Griefs/"+System.currentTimeMillis()+".yml");
 		FileConfiguration configFile = new YamlConfiguration();
 		
 		configFile.set("Name", Name);
@@ -89,8 +88,8 @@ public class warn extends JavaPlugin{
 	}
 	
 	
-	public static String loadgrief(){
-		File file = new File(warn.w.getDataFolder(),"Griefs");
+	public String loadGrief(){
+		File file = new File(this.getDataFolder(),"Griefs");
 		
 		File file2=null;
 		int fileint=0;
@@ -127,9 +126,7 @@ public class warn extends JavaPlugin{
 		return Name+"|"+x+"|"+y+"|"+z;
 	}
 	
-	
-	
-	public void loadconfig(){
+	public void loadConfig(){
 		File file = new File(this.getDataFolder(),"config.yml");
 		FileConfiguration configFile = YamlConfiguration.loadConfiguration(file);
 		
@@ -141,7 +138,7 @@ public class warn extends JavaPlugin{
 				ConfVerwarnung verwarnung=new ConfVerwarnung();
 				verwarnung.setNummer(num);
 				
-				List<String> StrafenListe=(List<String>) configFile.getList("Strafen."+num);
+				List<String> StrafenListe=configFile.getStringList("Strafen."+num);
 				if(StrafenListe!=null){
 					for(String strafe:StrafenListe){
 						verwarnung.BefehlListe.add(strafe);
@@ -152,13 +149,9 @@ public class warn extends JavaPlugin{
 			}
 		}while(nochzahlen == 0);
 		
-		warn.ResetTime=configFile.getInt("ResetTime");
-		warn.ResetTime=warn.ResetTime*60*1000;
+		this.resetTime=configFile.getInt("ResetTime");
+		this.resetTime=this.resetTime*60*1000;
 	}
-	
-	
-	
-	
 	
 	public void load(){
 		File file = new File(this.getDataFolder(),"saves.yml");
@@ -193,7 +186,6 @@ public class warn extends JavaPlugin{
 		}
 	}
 	
-	
 	public String[] increaseArray(String[] theArray, int increaseBy)  
 	{  
 	    int i = theArray.length;  
@@ -203,13 +195,11 @@ public class warn extends JavaPlugin{
 	    for(int cnt=0;cnt<theArray.length;cnt++) 
 	    {  
 	        newArray[cnt] = theArray[cnt];  
-	    }  
+	    }
 	    return newArray;  
 	}
 	
-	
-	
-	public void savetwo(){
+	public void saveTwo(){
 		File file = new File(this.getDataFolder(),"savesalt.yml");
 		FileConfiguration configFile = YamlConfiguration.loadConfiguration(file);
 		File file2 = new File(this.getDataFolder(),"savesneu.yml");
@@ -223,7 +213,6 @@ public class warn extends JavaPlugin{
 		String datum="";
 		String position="";
 		
-		int lol=0;
 		int count=0;
 		
 		for(String player:configFile.getKeys(false)){
@@ -250,49 +239,39 @@ public class warn extends JavaPlugin{
 				String[] result = gruli.split("[ ]");
 				for (int x=0; x<result.length; x++){
 					if(!result[x].equals(null)){
-						lol=0;
 						if(result[x].startsWith("|wegen--->")){
-							if(lol==0){
-								reason=result[x].replace("|wegen--->", "");
-								von=result[x+1].replace("von--->", "");
-								datum=result[x+2].replace("am--->", "");
-								position=result[x+3].replace("Ort_der_Bestrafung--->", "").replace("|", "");
-								
-								configFile2.set(player+".resonList."+count+".reason", reason);
-								configFile2.set(player+".resonList."+count+".von", von);
-								configFile2.set(player+".resonList."+count+".datum", datum);
-								configFile2.set(player+".resonList."+count+".position", position);
-								count=count+1;
-								lol=1;
-							}
+							reason=result[x].replace("|wegen--->", "");
+							von=result[x+1].replace("von--->", "");
+							datum=result[x+2].replace("am--->", "");
+							position=result[x+3].replace("Ort_der_Bestrafung--->", "").replace("|", "");
+							
+							configFile2.set(player+".resonList."+count+".reason", reason);
+							configFile2.set(player+".resonList."+count+".von", von);
+							configFile2.set(player+".resonList."+count+".datum", datum);
+							configFile2.set(player+".resonList."+count+".position", position);
+							count=count+1;
 						}else if(result[x].startsWith("|") && result[x].endsWith("|")){
-							if(lol==0){
-								reason=result[x].replace("|", "");
-								von="unknown";
-								datum="unknown";
-								position="unknown";
-								
-								configFile2.set(player+".resonList."+count+".reason", reason);
-								configFile2.set(player+".resonList."+count+".von", von);
-								configFile2.set(player+".resonList."+count+".datum", datum);
-								configFile2.set(player+".resonList."+count+".position", position);
-								count=count+1;
-								lol=1;
-							}
+							reason=result[x].replace("|", "");
+							von="unknown";
+							datum="unknown";
+							position="unknown";
+							
+							configFile2.set(player+".resonList."+count+".reason", reason);
+							configFile2.set(player+".resonList."+count+".von", von);
+							configFile2.set(player+".resonList."+count+".datum", datum);
+							configFile2.set(player+".resonList."+count+".position", position);
+							count=count+1;
 						}else if(result[x].startsWith("|")){
-							if(lol==0){
-								reason=result[x].replace("|", "");
-								von=result[x+2];
-								datum=result[x+4]+"/"+result[x+5];
-								position=result[x+6].replace("|", "");
-								
-								configFile2.set(player+".resonList."+count+".reason", reason);
-								configFile2.set(player+".resonList."+count+".von", von);
-								configFile2.set(player+".resonList."+count+".datum", datum);
-								configFile2.set(player+".resonList."+count+".position", position);
-								count=count+1;
-								lol=1;
-							}
+							reason=result[x].replace("|", "");
+							von=result[x+2];
+							datum=result[x+4]+"/"+result[x+5];
+							position=result[x+6].replace("|", "");
+							
+							configFile2.set(player+".resonList."+count+".reason", reason);
+							configFile2.set(player+".resonList."+count+".von", von);
+							configFile2.set(player+".resonList."+count+".datum", datum);
+							configFile2.set(player+".resonList."+count+".position", position);
+							count=count+1;
 						}
 					}
 				}
@@ -302,19 +281,16 @@ public class warn extends JavaPlugin{
 		try {
 			configFile2.save(file2);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
-	
 	/* Init Permissions */
-	
-	public static Permission perms = null;
+	public Permission perms = null;
 	
 	private boolean setupPermissions() {
         RegisteredServiceProvider<Permission> rsp = getServer().getServicesManager().getRegistration(net.milkbowl.vault.permission.Permission.class);
-        perms = rsp.getProvider();
-        return perms != null;
+        this.perms = rsp.getProvider();
+        return this.perms != null;
     }
 }

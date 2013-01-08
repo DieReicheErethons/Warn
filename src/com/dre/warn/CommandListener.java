@@ -12,7 +12,7 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 public class CommandListener implements CommandExecutor {
-	
+	private P p = P.p;
 	
 	
 	WPlayer PLAYER;
@@ -38,7 +38,7 @@ public class CommandListener implements CommandExecutor {
 			if(sender instanceof Player){
 				this.isPlayer=true;
 				player2=(Player) sender;
-				warn.perms.playerHas(player2, "warn.admin");
+				P.p.perms.playerHas(player2, "warn.admin");
 			}else{
 				this.isPlayer=false;
 			}
@@ -48,38 +48,38 @@ public class CommandListener implements CommandExecutor {
 				if(args[0].equalsIgnoreCase("help")){
 					if(this.isPlayer){
 						sender.sendMessage(ChatColor.GREEN+"==================[WarnDRE Help]==================");
-						if(warn.perms.playerHas(player2, "warn.admin") || warn.perms.playerHas(player2, "warn.mod") || sender.isOp()){
+						if(p.perms.playerHas(player2, "warn.admin") || p.perms.playerHas(player2, "warn.mod") || sender.isOp()){
 							sender.sendMessage(ChatColor.YELLOW+"/warn info <SpielerName> <Seitenzahl>");
 							sender.sendMessage(ChatColor.YELLOW+"/Warn [SpielerName] <Grund>");
 							sender.sendMessage(ChatColor.YELLOW+"/Warn list");
-							if(warn.perms.playerHas(player2, "warn.admin") || sender.isOp()){
+							if(p.perms.playerHas(player2, "warn.admin") || sender.isOp()){
 								sender.sendMessage(ChatColor.YELLOW+"/Warn reload");
 							}
-						}else if(warn.perms.playerHas(player2, "warn.user")){
+						}else if(p.perms.playerHas(player2, "warn.user")){
 							sender.sendMessage(ChatColor.YELLOW+"/warn info <Seitenzahl>");
 						}else{
 							sender.sendMessage(ChatColor.GREEN+"[WarnDRE]: "+ChatColor.RED+"Du hast keine Berechtigung auf diesem CMD");
 						}
 						
 					}else{
-						warn.w.getServer().getLogger().log(Level.INFO,"[WarnDRE]HelpCMD");
+						p.getServer().getLogger().log(Level.INFO,"[WarnDRE]HelpCMD");
 					}
 				}else if(args[0].equalsIgnoreCase("list")){
 					if(this.isPlayer){
-						if(warn.perms.playerHas(player2, "warn.admin") || warn.perms.playerHas(player2, "warn.mod") || sender.isOp()){
+						if(p.perms.playerHas(player2, "warn.admin") || p.perms.playerHas(player2, "warn.mod") || sender.isOp()){
 							sender.sendMessage(ChatColor.GREEN+"[WarnDRE] Liste:");
 							for(WPlayer wplayer:WPlayer.WPlayers){
 								sender.sendMessage(ChatColor.YELLOW+"User: "+wplayer.player+" hat "+wplayer.getVerwarnpunkt()+" Punkte");
 							}
 						}
 					}else{
-						warn.w.getServer().getLogger().log(Level.INFO,"[WarnDRE]ListCMD");
+						p.getServer().getLogger().log(Level.INFO,"[WarnDRE]ListCMD");
 					}
 				}else if(args[0].equalsIgnoreCase("info")){
 					if(this.isPlayer){
 						//Normaler Spieler
-						if(!warn.perms.playerHas(player2, "warn.admin") && !warn.perms.playerHas(player2, "warn.mod") && !sender.isOp()){
-							if(warn.perms.playerHas(player2, "warn.user")){
+						if(!p.perms.playerHas(player2, "warn.admin") && !p.perms.playerHas(player2, "warn.mod") && !sender.isOp()){
+							if(p.perms.playerHas(player2, "warn.user")){
 								for(WPlayer wplayer:WPlayer.WPlayers){
 									if(wplayer.player.equalsIgnoreCase(sender.getName())){
 										sender.sendMessage(ChatColor.GREEN+"[WarnDRE] Info zu "+wplayer.player+":");
@@ -241,29 +241,29 @@ public class CommandListener implements CommandExecutor {
 							}	
 						}
 					}else{
-						warn.w.getServer().getLogger().log(Level.INFO,"[WarnDRE]InfoCMD");
+						p.getServer().getLogger().log(Level.INFO,"[WarnDRE]InfoCMD");
 					}
 				}else if(args[0].equalsIgnoreCase("reload")){
-					if(warn.perms.playerHas(player2, "warn.admin") || !(this.isPlayer) || player2.isOp()){
+					if(p.perms.playerHas(player2, "warn.admin") || !(this.isPlayer) || player2.isOp()){
 						ConfVerwarnung.ConfVerwarnungen.clear();
-						warn.w.loadconfig();
+						p.loadConfig();
 						WPlayer.WPlayers.clear();
-						warn.w.load();
+						p.load();
 						sender.sendMessage(ChatColor.GREEN+"[WarnDRE]: "+ChatColor.WHITE+"Konfig-File und Save-File neu geladen.");
-						warn.w.getServer().getLogger().log(Level.INFO,"[WarnDRE]Config Reloaded");
+						p.getServer().getLogger().log(Level.INFO,"[WarnDRE]Config Reloaded");
 					}else{
 						sender.sendMessage(ChatColor.GREEN+"[WarnDRE]: "+ChatColor.RED+"Du hast keine Berechtigung auf diesem CMD");
 					}
 				}else if(args[0].equalsIgnoreCase("grief")){
 					if(this.isPlayer){
-						warn.savegrief(sender.getName(), player2.getLocation().getBlockX(), player2.getLocation().getBlockY(), player2.getLocation().getBlockZ());
+						p.saveGrief(sender.getName(), player2.getLocation().getBlockX(), player2.getLocation().getBlockY(), player2.getLocation().getBlockZ());
 						sender.sendMessage(ChatColor.GREEN+"[WarnDRE] "+ChatColor.YELLOW+"Grief gemeldet, und Name und Position Gespeichert");
 					}
 				}else if(args[0].equalsIgnoreCase("savetwo")){
-					warn.w.savetwo();
+					p.saveTwo();
 				}else if(args[0].equalsIgnoreCase("tpgrief")){
-					if(warn.perms.playerHas(player2, "warn.admin") || sender.isOp()){
-						this.Grief=warn.loadgrief().split("[|]");
+					if(p.perms.playerHas(player2, "warn.admin") || sender.isOp()){
+						this.Grief=p.loadGrief().split("[|]");
 						if(this.Grief[2].equalsIgnoreCase("0")){
 							sender.sendMessage(ChatColor.GREEN+"[WarnDRE] "+ChatColor.YELLOW+"Es wurden keine neuen Griefs gemeldet");
 						}else{
@@ -279,7 +279,7 @@ public class CommandListener implements CommandExecutor {
 					}
 				}else{
 					
-					if(warn.perms.playerHas(player2, "warn.admin") || warn.perms.has(player2, "warn.mod") || sender.isOp()){
+					if(p.perms.playerHas(player2, "warn.admin") || p.perms.has(player2, "warn.mod") || sender.isOp()){
 						if(args.length>1){
 							//Wenn bereits Verwarnt
 							for(WPlayer wplayer:WPlayer.WPlayers){
@@ -304,16 +304,16 @@ public class CommandListener implements CommandExecutor {
 								this.Grund=args[1];
 								
 								if(PLAYER.reasonzahl > PLAYER.reason.length){
-									PLAYER.reason= warn.w.increaseArray(PLAYER.reason, 10);
+									PLAYER.reason= p.increaseArray(PLAYER.reason, 10);
 								}
 								if(PLAYER.reasonzahl > PLAYER.von.length){
-									PLAYER.von= warn.w.increaseArray(PLAYER.von, 10);
+									PLAYER.von= p.increaseArray(PLAYER.von, 10);
 								}
 								if(PLAYER.reasonzahl > PLAYER.datum.length){
-									PLAYER.datum= warn.w.increaseArray(PLAYER.datum, 10);
+									PLAYER.datum= p.increaseArray(PLAYER.datum, 10);
 								}
 								if(PLAYER.reasonzahl > PLAYER.position.length){
-									PLAYER.position= warn.w.increaseArray(PLAYER.position, 10);
+									PLAYER.position= p.increaseArray(PLAYER.position, 10);
 								}
 								
 								this.PLAYER.reason[PLAYER.reasonzahl]=args[1];
@@ -326,7 +326,7 @@ public class CommandListener implements CommandExecutor {
 								this.PLAYER.Grundliste=this.PLAYER.Grundliste+"   |UNKNOWN von: "+sender.getName()+" am: "+date.format(now)+"|";
 							}
 							
-							ConsoleCommandSender consolesender=warn.w.getServer().getConsoleSender();
+							ConsoleCommandSender consolesender=p.getServer().getConsoleSender();
 							
 							String[] listarray;
 							
@@ -350,12 +350,12 @@ public class CommandListener implements CommandExecutor {
 											list=list+" "+listarray[i];
 										}
 										
-										warn.w.getServer().dispatchCommand(consolesender,list);
+										p.getServer().dispatchCommand(consolesender,list);
 									}
 									if(this.isPlayer){
 										sender.sendMessage(ChatColor.GREEN+"[WarnDRE]: "+ChatColor.WHITE+"Der Spieler "+this.PLAYER.player+" wurde erfolgreich Bestraft. Er hat "+this.PLAYER.getVerwarnpunkt()+" VerwarnPunkte.");
 									}else{
-										warn.w.getServer().getLogger().log(Level.INFO,"[WarnDRE]: "+"Der Speiler "+this.PLAYER.player+" wurde erfolgreich Bestraft. Er hat "+this.PLAYER.getVerwarnpunkt()+" VerwarnPunkte.");
+										p.getServer().getLogger().log(Level.INFO,"[WarnDRE]: "+"Der Speiler "+this.PLAYER.player+" wurde erfolgreich Bestraft. Er hat "+this.PLAYER.getVerwarnpunkt()+" VerwarnPunkte.");
 									}
 								}
 								
@@ -364,7 +364,7 @@ public class CommandListener implements CommandExecutor {
 							if(this.isPlayer){
 								sender.sendMessage(ChatColor.GREEN+"[WarnDRE]: "+ChatColor.WHITE+"Bitte Grund Angeben");
 							}else{
-								warn.w.getServer().getLogger().log(Level.INFO,"[WarnDRE]: "+"Bitte Grund Angeben");
+								p.getServer().getLogger().log(Level.INFO,"[WarnDRE]: "+"Bitte Grund Angeben");
 							}
 						}
 					}else{
@@ -380,7 +380,7 @@ public class CommandListener implements CommandExecutor {
 				}
 			}
 				
-			warn.save();
+			p.save();
 		}
 		
 		return false;
