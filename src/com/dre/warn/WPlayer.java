@@ -6,28 +6,22 @@ import java.util.Set;
 public class WPlayer {
 	private P p = P.p;
 	
+	public static Set<WPlayer> WPlayers=new HashSet<WPlayer>();
+	
 	public String player;
 	private int Verwarnpunkt;
 	public long ResTime;
 	
-	String Grundliste;
+	public String Grundliste = "";
 	
 	public int reasonzahl;
-	public String[] reason;
-	public String[] von; 
-	public String[] datum;
-	public String[] position;
-	
-	public static Set<WPlayer> WPlayers=new HashSet<WPlayer>();
+	public String[] reason = new String[0];
+	public String[] von = new String[0]; 
+	public String[] datum = new String[0];
+	public String[] position = new String[0];
 	
 	public WPlayer(){
 		WPlayers.add(this);
-		this.addPunkt();
-		this.Grundliste="";
-		this.reason = new String[30];
-		this.von = new String[30];
-		this.datum = new String[30];
-		this.position = new String[30];
 	}
 	
 	public void addPunkt(){
@@ -37,7 +31,6 @@ public class WPlayer {
 	}
 	public void remPunkt(){
 		this.setVerwarnpunkt(this.getVerwarnpunkt()-1);
-		this.ResTime=System.currentTimeMillis();
 		
 		if(this.getVerwarnpunkt() < 0){
 			this.setVerwarnpunkt(0);
@@ -47,11 +40,6 @@ public class WPlayer {
 	
 	public void setName(String name){
 		this.player=name;
-	}
-	
-	public void Verwarn(){
-		
-				
 	}
 
 	public int getVerwarnPunkte() {

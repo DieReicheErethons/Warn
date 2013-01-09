@@ -302,7 +302,6 @@ public class CommandListener implements CommandExecutor {
 							for(WPlayer wplayer:WPlayer.WPlayers){
 								if(wplayer.player.equals(args[0])){
 									this.playerAlredyExists=true;
-									wplayer.addPunkt();
 									this.PLAYER=wplayer;
 								}
 							}
@@ -314,23 +313,25 @@ public class CommandListener implements CommandExecutor {
 								this.PLAYER=wplayer;
 							}
 							
+							this.PLAYER.addPunkt();
+							
 							java.util.Date now=new java.util.Date();
 							java.text.SimpleDateFormat date=new java.text.SimpleDateFormat("dd.MM.yyyy/hh.mm.ss");
 							
 							if(args.length>1){
 								this.Grund=args[1];
 								
-								if(PLAYER.reasonzahl > PLAYER.reason.length){
-									PLAYER.reason= p.increaseArray(PLAYER.reason, 10);
+								if(PLAYER.reasonzahl >= PLAYER.reason.length){
+									PLAYER.reason= p.increaseArray(PLAYER.reason, 1);
 								}
-								if(PLAYER.reasonzahl > PLAYER.von.length){
-									PLAYER.von= p.increaseArray(PLAYER.von, 10);
+								if(PLAYER.reasonzahl >= PLAYER.von.length){
+									PLAYER.von= p.increaseArray(PLAYER.von, 1);
 								}
-								if(PLAYER.reasonzahl > PLAYER.datum.length){
-									PLAYER.datum= p.increaseArray(PLAYER.datum, 10);
+								if(PLAYER.reasonzahl >= PLAYER.datum.length){
+									PLAYER.datum= p.increaseArray(PLAYER.datum, 1);
 								}
-								if(PLAYER.reasonzahl > PLAYER.position.length){
-									PLAYER.position= p.increaseArray(PLAYER.position, 10);
+								if(PLAYER.reasonzahl >= PLAYER.position.length){
+									PLAYER.position= p.increaseArray(PLAYER.position, 1);
 								}
 								
 								this.PLAYER.reason[PLAYER.reasonzahl]=args[1];

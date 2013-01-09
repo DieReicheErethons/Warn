@@ -34,6 +34,7 @@ public class P extends JavaPlugin{
 		    	for(WPlayer wplayer:WPlayer.WPlayers){
 		    		if((p.resetTime+wplayer.ResTime)<System.currentTimeMillis()){
 		    			wplayer.remPunkt();
+		    			wplayer.ResTime=System.currentTimeMillis();
 		    			p.getServer().getLogger().log(Level.INFO,"[WarnDRE]punkt weg von "+wplayer.player);
 		    		}
 		    	}
@@ -164,25 +165,18 @@ public class P extends JavaPlugin{
 			wplayer.ResTime=configFile.getLong(player+".time");
 			wplayer.reasonzahl=configFile.getInt(player+".reasonzahl");
 			
+			wplayer.reason= this.increaseArray(wplayer.reason, wplayer.reasonzahl);
+			wplayer.von= this.increaseArray(wplayer.von, wplayer.reasonzahl);
+			wplayer.datum= this.increaseArray(wplayer.datum, wplayer.reasonzahl);
+			wplayer.position= this.increaseArray(wplayer.position, wplayer.reasonzahl);
+			
 			for(int i=0;i<wplayer.reasonzahl;i++){
-				if(i > wplayer.reason.length){
-					wplayer.reason= this.increaseArray(wplayer.reason, 10);
-				}
-				if(i > wplayer.von.length){
-					wplayer.von= this.increaseArray(wplayer.von, 10);
-				}
-				if(i > wplayer.datum.length){
-					wplayer.datum= this.increaseArray(wplayer.datum, 10);
-				}
-				if(i > wplayer.position.length){
-					wplayer.position= this.increaseArray(wplayer.position, 10);
-				}
-				
 				wplayer.reason[i]=configFile.getString(player+".resonList."+i+".reason");
 				wplayer.von[i]=configFile.getString(player+".resonList."+i+".von");
 				wplayer.datum[i]=configFile.getString(player+".resonList."+i+".datum");
 				wplayer.position[i]=configFile.getString(player+".resonList."+i+".position");
 			}
+			
 		}
 	}
 	
