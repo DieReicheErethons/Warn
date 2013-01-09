@@ -1,6 +1,10 @@
 package com.dre.warn;
 
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
@@ -16,9 +20,6 @@ public class CommandListener implements CommandExecutor {
 	
 	WPlayer PLAYER;
 	String Grund;
-	String[] GruList;
-	String GruListPart;
-	int JailTime;
 	boolean isPlayer;
 	boolean foundplayer;
 	boolean playerAlredyExists;
@@ -30,7 +31,6 @@ public class CommandListener implements CommandExecutor {
 			Player player2=null;
 			this.playerAlredyExists=false;
 			this.Grund="";
-			this.JailTime=0;
 			this.PLAYER=null;
 			this.foundplayer=false;
 			
@@ -65,10 +65,54 @@ public class CommandListener implements CommandExecutor {
 				}else if(args[0].equalsIgnoreCase("list")){
 					if(this.isPlayer){
 						if(p.perms.playerHas(player2, "warn.admin") || p.perms.playerHas(player2, "warn.mod") || sender.isOp()){
-							sender.sendMessage(ChatColor.GREEN+"[WarnDRE] Liste:");
+							int page = 1;
+							int maxPages = 0;
+							
+							/* Send only players with >0 warnings */
+							List<WPlayer> wPlayersWithWarnings = new ArrayList<WPlayer>();
+							
 							for(WPlayer wplayer:WPlayer.WPlayers){
-								sender.sendMessage(ChatColor.YELLOW+"User: "+wplayer.player+" hat "+wplayer.getVerwarnpunkt()+" Punkte");
+								if(wplayer.getVerwarnpunkt()>0){
+									wPlayersWithWarnings.add(wplayer);
+								}
 							}
+							
+							/* Sort the list */
+							if (args.length > 2) {
+								if (args[2].equalsIgnoreCase("name")) {
+									Collections.sort(wPlayersWithWarnings,new NameComparator());
+								} else if (args[2].equalsIgnoreCase("oname")) {
+									Collections.sort(wPlayersWithWarnings,new oNameComparator());
+								} else if (args[2].equalsIgnoreCase("points")) {
+									Collections.sort(wPlayersWithWarnings,new PointsComparator());
+								} else if (args[2].equalsIgnoreCase("opoints")) {
+									Collections.sort(wPlayersWithWarnings,new oPointsComparator());
+								}
+							} else {
+								Collections.sort(wPlayersWithWarnings,new NameComparator());
+							}
+							
+							/* Send the list */
+							maxPages = (int) Math.ceil(wPlayersWithWarnings.size()/10)+1;
+							
+							if (args.length > 1) {
+								page = Integer.parseInt(args[1]);
+								if (page < 1) {
+									page = 1;
+								}
+								if (page > maxPages) {
+									page = maxPages;
+								}
+							} 
+							
+							sender.sendMessage(ChatColor.GREEN+"[------ Liste aller Spieler ------]");
+							for (int i = (page-1)*10;i<page*10;i++) {
+								if (i < wPlayersWithWarnings.size()) {
+									WPlayer wplayer = wPlayersWithWarnings.get(i);
+									sender.sendMessage(ChatColor.YELLOW+wplayer.player+" : "+wplayer.getVerwarnpunkt());
+								}
+							}
+							sender.sendMessage(ChatColor.GREEN+"[----------- ("+page+"/"+maxPages+") -----------]");
 						}
 					}else{
 						p.getServer().getLogger().log(Level.INFO,"[WarnDRE]ListCMD");
@@ -402,5 +446,34 @@ public class CommandListener implements CommandExecutor {
 		}
 		
 		return false;
+	}
+	
+	/* Comporators */
+	public class NameComparator implements Comparator<WPlayer>{
+		@Override
+		public int compare(WPlayer player1, WPlayer player2) {
+			return player1.player.compareTo(player2.player); 
+		}
+	}
+	
+	public class oNameComparator implements Comparator<WPlayer>{
+		@Override
+		public int compare(WPlayer player1, WPlayer player2) {
+			return - player1.player.compareTo(player2.player); 
+		}
+	}
+	
+	public class PointsComparator implements Comparator<WPlayer>{
+		@Override
+		public int compare(WPlayer player1, WPlayer player2) {
+			return - ((Integer) player1.getVerwarnPunkte()).compareTo((Integer) player2.getVerwarnPunkte()); 
+		}
+	}
+	
+	public class oPointsComparator implements Comparator<WPlayer>{
+		@Override
+		public int compare(WPlayer player1, WPlayer player2) {
+			return ((Integer) player1.getVerwarnPunkte()).compareTo((Integer) player2.getVerwarnPunkte()); 
+		}
 	}
 }
