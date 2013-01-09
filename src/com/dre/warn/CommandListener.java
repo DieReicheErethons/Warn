@@ -14,7 +14,6 @@ import org.bukkit.entity.Player;
 public class CommandListener implements CommandExecutor {
 	private P p = P.p;
 	
-	
 	WPlayer PLAYER;
 	String Grund;
 	String[] GruList;
@@ -44,7 +43,6 @@ public class CommandListener implements CommandExecutor {
 			}
 			
 			if(args.length > 0){
-				
 				if(args[0].equalsIgnoreCase("help")){
 					if(this.isPlayer){
 						sender.sendMessage(ChatColor.GREEN+"==================[WarnDRE Help]==================");
@@ -264,6 +262,7 @@ public class CommandListener implements CommandExecutor {
 				}else if(args[0].equalsIgnoreCase("tpgrief")){
 					if(p.perms.playerHas(player2, "warn.admin") || sender.isOp()){
 						this.Grief=p.loadGrief().split("[|]");
+						
 						if(this.Grief[2].equalsIgnoreCase("0")){
 							sender.sendMessage(ChatColor.GREEN+"[WarnDRE] "+ChatColor.YELLOW+"Es wurden keine neuen Griefs gemeldet");
 						}else{
@@ -272,14 +271,32 @@ public class CommandListener implements CommandExecutor {
 							Bukkit.dispatchCommand(player2, "tploc "+this.Grief[1]+" "+this.Grief[2]+" "+this.Grief[3]);
 						}
 					}
-					
-				}else if(args[0].equalsIgnoreCase("chat")){
-					if(this.isPlayer){
-						player2=(Player) sender;
+				} else if (args[0].equalsIgnoreCase("chat")) {
+					if (this.isPlayer) {
+						player2 = (Player) sender;
 					}
-				}else{
-					
-					if(p.perms.playerHas(player2, "warn.admin") || p.perms.has(player2, "warn.mod") || sender.isOp()){
+				} else if (args[0].equalsIgnoreCase("remove")) {
+					if (args.length>1) {
+						boolean foundPlayer = false;
+						for (WPlayer wplayer:WPlayer.WPlayers) {
+							if (wplayer.player.equalsIgnoreCase(args[1])) {
+								wplayer.remPunkt();
+								
+								sender.sendMessage(ChatColor.GREEN+"1 Punkt wurde von "+ChatColor.GOLD+args[1]+ChatColor.GREEN+" entfernt");
+								
+								foundPlayer = true;
+								break;
+							}
+						}
+						
+						if (!foundPlayer) {
+							sender.sendMessage(ChatColor.RED+"Spieler "+ChatColor.GOLD+args[1]+ChatColor.RED+" wurde nicht gefunden!");
+						}
+					} else {
+						sender.sendMessage(ChatColor.RED+"/warn remove <player>");
+					}
+				} else {
+					if (p.perms.playerHas(player2, "warn.admin") || p.perms.has(player2, "warn.mod") || sender.isOp()) {
 						if(args.length>1){
 							//Wenn bereits Verwarnt
 							for(WPlayer wplayer:WPlayer.WPlayers){
