@@ -464,14 +464,14 @@ public class CommandListener implements CommandExecutor {
 	public class PointsComparator implements Comparator<WPlayer>{
 		@Override
 		public int compare(WPlayer player1, WPlayer player2) {
-			return - ((Integer) player1.getVerwarnPunkte()).compareTo((Integer) player2.getVerwarnPunkte()); 
+			return ((Integer) player1.getVerwarnPunkte()).compareTo((Integer) player2.getVerwarnPunkte()); 
 		}
 	}
 	
 	public class oPointsComparator implements Comparator<WPlayer>{
 		@Override
 		public int compare(WPlayer player1, WPlayer player2) {
-			return ((Integer) player1.getVerwarnPunkte()).compareTo((Integer) player2.getVerwarnPunkte()); 
+			return - ((Integer) player1.getVerwarnPunkte()).compareTo((Integer) player2.getVerwarnPunkte()); 
 		}
 	}
 }
