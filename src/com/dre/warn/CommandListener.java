@@ -441,8 +441,6 @@ public class CommandListener implements CommandExecutor {
 					
 				}
 			}
-				
-			p.save();
 		}
 		
 		return false;

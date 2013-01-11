@@ -25,7 +25,6 @@ public class P extends JavaPlugin{
 		
 		this.load();
 		this.loadConfig();
-		this.save();
 		
 		getCommand("warn").setExecutor(new CommandListener());
 		
@@ -42,6 +41,8 @@ public class P extends JavaPlugin{
 		    	
 		    	
 		        System.currentTimeMillis();
+		        
+		        p.save();
 		    }
 		}, 10000L, 10000L);
 		

@@ -5,8 +5,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class WPlayer {
-	private P p = P.p;
-	
 	public static Set<WPlayer> WPlayers=new HashSet<WPlayer>();
 	
 	public String player;
@@ -28,7 +26,6 @@ public class WPlayer {
 	public void addPunkt(){
 		this.setVerwarnpunkt(this.getVerwarnpunkt()+1);
 		this.ResTime=System.currentTimeMillis();
-		p.save();
 	}
 	public void remPunkt(){
 		this.setVerwarnpunkt(this.getVerwarnpunkt()-1);
@@ -36,7 +33,6 @@ public class WPlayer {
 		if(this.getVerwarnpunkt() < 0){
 			this.setVerwarnpunkt(0);
 		}
-		p.save();
 	}
 	
 	public void setName(String name){
