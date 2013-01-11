@@ -8,6 +8,7 @@ import java.util.logging.Level;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -28,7 +29,7 @@ public class P extends JavaPlugin{
 		
 		getCommand("warn").setExecutor(new CommandListener());
 		
-		/* Sheduler */
+		/* Scheduler */
 		this.getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
 		    public void run() {
 		    	for(WPlayer wplayer:WPlayer.WPlayers){
@@ -45,6 +46,21 @@ public class P extends JavaPlugin{
 		}, 10000L, 10000L);
 		
 		this.setupPermissions();
+	}
+	
+	@Override
+	public void onDisable(){
+		//Save everything
+		p.save();
+		
+		//Disable listeners
+		HandlerList.unregisterAll(p);
+		
+		//Disable schedulers
+		p.getServer().getScheduler().cancelTasks(p);
+		
+		//Delete all loaded data
+		WPlayer.WPlayers.clear();
 	}
 	
 	public void save(){
