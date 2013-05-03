@@ -6,20 +6,20 @@ import java.util.List;
 import java.util.Set;
 
 public class ConfVerwarnung {
-	public static Set<ConfVerwarnung> ConfVerwarnungen=new HashSet<ConfVerwarnung>();
-	
+	public static Set<ConfVerwarnung> ConfVerwarnungen = new HashSet<ConfVerwarnung>();
+
 	int Nummer;
-	List<String> BefehlListe=new ArrayList<String>();
-	
-	public int getNummer(){
+	List<String> BefehlListe = new ArrayList<String>();
+
+	public int getNummer() {
 		return Nummer;
 	}
-	
-	public void setNummer(int num){
-		this.Nummer=num;
+
+	public void setNummer(int num) {
+		this.Nummer = num;
 	}
-	
-	public ConfVerwarnung(){
+
+	public ConfVerwarnung() {
 		ConfVerwarnungen.add(this);
 	}
 }

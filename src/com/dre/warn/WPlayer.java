@@ -1,42 +1,42 @@
 package com.dre.warn;
 
-
 import java.util.HashSet;
 import java.util.Set;
 
 public class WPlayer {
-	public static Set<WPlayer> WPlayers=new HashSet<WPlayer>();
-	
+	public static Set<WPlayer> WPlayers = new HashSet<WPlayer>();
+
 	public String player;
 	private int Verwarnpunkt;
 	public long ResTime;
-	
+
 	public String Grundliste = "";
-	
+
 	public int reasonzahl;
 	public String[] reason = new String[0];
-	public String[] von = new String[0]; 
+	public String[] von = new String[0];
 	public String[] datum = new String[0];
 	public String[] position = new String[0];
-	
-	public WPlayer(){
+
+	public WPlayer() {
 		WPlayers.add(this);
 	}
-	
-	public void addPunkt(){
-		this.setVerwarnpunkt(this.getVerwarnpunkt()+1);
-		this.ResTime=System.currentTimeMillis();
+
+	public void addPunkt() {
+		this.setVerwarnpunkt(this.getVerwarnpunkt() + 1);
+		this.ResTime = System.currentTimeMillis();
 	}
-	public void remPunkt(){
-		this.setVerwarnpunkt(this.getVerwarnpunkt()-1);
-		
-		if(this.getVerwarnpunkt() < 0){
+
+	public void remPunkt() {
+		this.setVerwarnpunkt(this.getVerwarnpunkt() - 1);
+
+		if (this.getVerwarnpunkt() < 0) {
 			this.setVerwarnpunkt(0);
 		}
 	}
-	
-	public void setName(String name){
-		this.player=name;
+
+	public void setName(String name) {
+		this.player = name;
 	}
 
 	public int getVerwarnPunkte() {
