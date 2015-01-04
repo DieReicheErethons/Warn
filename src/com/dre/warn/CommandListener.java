@@ -301,9 +301,11 @@ public class CommandListener implements CommandExecutor {
 						sender.sendMessage(ChatColor.GREEN + "[WarnDRE] " + ChatColor.YELLOW + "Grief gemeldet, und Name und Position Gespeichert");
 					}
 				} else if (args[0].equalsIgnoreCase("savetwo")) {
-					p.saveTwo();
+					if (p.perms.playerHas(player2, "warn.admin") || p.perms.playerHas(player2, "warn.mod") || sender.isOp()) {
+						p.saveTwo();
+					}
 				} else if (args[0].equalsIgnoreCase("tpgrief")) {
-					if (p.perms.playerHas(player2, "warn.admin") || sender.isOp()) {
+					if (p.perms.playerHas(player2, "warn.admin") || p.perms.playerHas(player2, "warn.mod") || sender.isOp()) {
 						this.Grief = p.loadGrief().split("[|]");
 
 						if (this.Grief[2].equalsIgnoreCase("0")) {
@@ -315,29 +317,27 @@ public class CommandListener implements CommandExecutor {
 							Bukkit.dispatchCommand(player2, "tploc " + this.Grief[1] + " " + this.Grief[2] + " " + this.Grief[3]);
 						}
 					}
-				} else if (args[0].equalsIgnoreCase("chat")) {
-					if (this.isPlayer) {
-						player2 = (Player) sender;
-					}
 				} else if (args[0].equalsIgnoreCase("remove")) {
-					if (args.length > 1) {
-						boolean foundPlayer = false;
-						for (WPlayer wplayer : WPlayer.WPlayers) {
-							if (wplayer.player.equalsIgnoreCase(args[1])) {
-								wplayer.remPunkt();
-
-								sender.sendMessage(ChatColor.GREEN + "1 Punkt wurde von " + ChatColor.GOLD + args[1] + ChatColor.GREEN + " entfernt");
-
-								foundPlayer = true;
-								break;
+					if (p.perms.playerHas(player2, "warn.admin") || p.perms.playerHas(player2, "warn.mod") || sender.isOp()) {
+						if (args.length > 1) {
+							boolean foundPlayer = false;
+							for (WPlayer wplayer : WPlayer.WPlayers) {
+								if (wplayer.player.equalsIgnoreCase(args[1])) {
+									wplayer.remPunkt();
+	
+									sender.sendMessage(ChatColor.GREEN + "1 Punkt wurde von " + ChatColor.GOLD + args[1] + ChatColor.GREEN + " entfernt");
+	
+									foundPlayer = true;
+									break;
+								}
 							}
+	
+							if (!foundPlayer) {
+								sender.sendMessage(ChatColor.RED + "Spieler " + ChatColor.GOLD + args[1] + ChatColor.RED + " wurde nicht gefunden!");
+							}
+						} else {
+							sender.sendMessage(ChatColor.RED + "/warn remove <player>");
 						}
-
-						if (!foundPlayer) {
-							sender.sendMessage(ChatColor.RED + "Spieler " + ChatColor.GOLD + args[1] + ChatColor.RED + " wurde nicht gefunden!");
-						}
-					} else {
-						sender.sendMessage(ChatColor.RED + "/warn remove <player>");
 					}
 				} else {
 					if (p.perms.playerHas(player2, "warn.admin") || p.perms.has(player2, "warn.mod") || sender.isOp()) {
