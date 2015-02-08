@@ -2,9 +2,15 @@ package com.dre.warn;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 import java.util.logging.Level;
 
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.HandlerList;
@@ -26,15 +32,18 @@ public class P extends JavaPlugin {
 		this.loadConfig();
 
 		getCommand("warn").setExecutor(new CommandListener());
-
-		/* Scheduler */
+		
+		// Init Listeners
+		Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
+		
+		// Scheduler
 		this.getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
 			public void run() {
 				for (WPlayer wplayer : WPlayer.WPlayers) {
 					if ((p.resetTime + wplayer.ResTime) < System.currentTimeMillis()) {
 						wplayer.remPunkt();
 						wplayer.ResTime = System.currentTimeMillis();
-						p.getServer().getLogger().log(Level.INFO, "[WarnDRE]punkt weg von " + wplayer.player);
+						p.getServer().getLogger().log(Level.INFO, "[WarnDRE] Punkt weg von " + wplayer.getName());
 					}
 				}
 
@@ -67,15 +76,16 @@ public class P extends JavaPlugin {
 		FileConfiguration configFile = new YamlConfiguration();
 
 		for (WPlayer wplayer : WPlayer.WPlayers) {
-			configFile.set(wplayer.player + ".warnings", wplayer.getVerwarnPunkte());
-			configFile.set(wplayer.player + ".time", wplayer.ResTime);
-			configFile.set(wplayer.player + ".reasonzahl", wplayer.reasonzahl);
+			configFile.set(wplayer.uuid + ".warnings", wplayer.getVerwarnPunkte());
+			configFile.set(wplayer.uuid + ".lastname", wplayer.getName());
+			configFile.set(wplayer.uuid + ".time", wplayer.ResTime);
+			configFile.set(wplayer.uuid + ".reasonzahl", wplayer.reasonzahl);
 
 			for (int i = 0; i < wplayer.reasonzahl; i++) {
-				configFile.set(wplayer.player + ".resonList." + i + ".reason", wplayer.reason[i]);
-				configFile.set(wplayer.player + ".resonList." + i + ".von", wplayer.von[i]);
-				configFile.set(wplayer.player + ".resonList." + i + ".datum", wplayer.datum[i]);
-				configFile.set(wplayer.player + ".resonList." + i + ".position", wplayer.position[i]);
+				configFile.set(wplayer.uuid + ".resonList." + i + ".reason", wplayer.reason[i]);
+				configFile.set(wplayer.uuid + ".resonList." + i + ".von", wplayer.von[i]);
+				configFile.set(wplayer.uuid + ".resonList." + i + ".datum", wplayer.datum[i]);
+				configFile.set(wplayer.uuid + ".resonList." + i + ".position", wplayer.position[i]);
 			}
 		}
 
@@ -86,11 +96,11 @@ public class P extends JavaPlugin {
 		}
 	}
 
-	public void saveGrief(String Name, double x, double y, double z) {
+	public void saveGrief(UUID uuid, double x, double y, double z) {
 		File file = new File(this.getDataFolder(), "Griefs/" + System.currentTimeMillis() + ".yml");
 		FileConfiguration configFile = new YamlConfiguration();
 
-		configFile.set("Name", Name);
+		configFile.set("UUID", uuid);
 		configFile.set("x", x);
 		configFile.set("y", y);
 		configFile.set("z", z);
@@ -112,7 +122,7 @@ public class P extends JavaPlugin {
 		File[] fileArray = file.listFiles();
 
 		double x = 0, y = 0, z = 0;
-		String Name = null;
+		String name = null;
 
 		for (int i = 0; i < fileArray.length; i++) {
 			if (fileArray[i].isFile()) {
@@ -132,13 +142,13 @@ public class P extends JavaPlugin {
 
 		new YamlConfiguration();
 		FileConfiguration configFile = YamlConfiguration.loadConfiguration(file2);
-		Name = configFile.getString("Name");
+		name = configFile.getString("Name");
 		x = configFile.getDouble("x");
 		y = configFile.getDouble("y");
 		z = configFile.getDouble("z");
 		fileArray[fileint].delete();
 
-		return Name + "|" + x + "|" + y + "|" + z;
+		return name + "|" + x + "|" + y + "|" + z;
 	}
 
 	public void loadConfig() {
@@ -172,9 +182,53 @@ public class P extends JavaPlugin {
 		File file = new File(this.getDataFolder(), "saves.yml");
 		FileConfiguration configFile = YamlConfiguration.loadConfiguration(file);
 
-		for (String player : configFile.getKeys(false)) {
+		Set<String> keys = configFile.getKeys(false);
+		
+		HashMap<String, String> uuidMapping = new HashMap<String, String>();
+		boolean excepted = false;
+		ArrayList<String> uuidFails = new ArrayList<String>();
+		
+		for (String uuid : keys) {
+			try{
+				UUID.fromString(uuid);
+				uuidMapping.put(uuid, uuid);
+			}catch(Exception e){
+				excepted = true;
+				p.getServer().getLogger().log(Level.INFO, "Convert " + uuid + " to the new UUID system...");
+				uuidFails.add(uuid);
+			}
+		}
+		
+		if(excepted){
+			UUIDFetcher fetcher = new UUIDFetcher(uuidFails);
+			
+			try {
+				Map<String, UUID> result = fetcher.call();
+				for(String resultKey: result.keySet()){
+					uuidMapping.put(resultKey, result.get(resultKey).toString());
+					p.getServer().getLogger().log(Level.INFO, resultKey + " has now the UUID " + result.get(resultKey).toString());
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		for (String player : keys) {
+			String uuidString = uuidMapping.get(player);
+			
+			if(uuidString == null || uuidString.equalsIgnoreCase("null")){
+				continue;
+			}
+			
 			WPlayer wplayer = new WPlayer();
-			wplayer.setName(player);
+			wplayer.uuid = UUID.fromString(uuidString);
+			
+			if (uuidFails.contains(player)) {
+				wplayer.lastname = player;
+			} else {
+				wplayer.lastname = configFile.getString(player + ".lastname");
+			}
+			
 			wplayer.setVerwarnpunkt(configFile.getInt(player + ".warnings"));
 			wplayer.ResTime = configFile.getLong(player + ".time");
 			wplayer.reasonzahl = configFile.getInt(player + ".reasonzahl");
@@ -190,7 +244,6 @@ public class P extends JavaPlugin {
 				wplayer.datum[i] = configFile.getString(player + ".resonList." + i + ".datum");
 				wplayer.position[i] = configFile.getString(player + ".resonList." + i + ".position");
 			}
-
 		}
 	}
 
@@ -290,7 +343,8 @@ public class P extends JavaPlugin {
 			e.printStackTrace();
 		}
 	}
-
+	
+	
 	/* Init Permissions */
 	public Permission perms = null;
 
