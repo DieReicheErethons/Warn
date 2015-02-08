@@ -36,7 +36,6 @@ public class CommandListener implements CommandExecutor {
 			if (sender instanceof Player) {
 				this.isPlayer = true;
 				player2 = (Player) sender;
-				P.p.perms.playerHas(player2, "warn.admin");
 			} else {
 				this.isPlayer = false;
 			}
@@ -344,7 +343,7 @@ public class CommandListener implements CommandExecutor {
 						if (args.length > 1) {
 							// Wenn bereits Verwarnt
 							for (WPlayer wplayer : WPlayer.WPlayers) {
-								if (wplayer.player.equals(args[0])) {
+								if (wplayer.player.equalsIgnoreCase(args[0])) {
 									this.playerAlredyExists = true;
 									this.PLAYER = wplayer;
 								}
